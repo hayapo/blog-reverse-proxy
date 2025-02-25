@@ -43,14 +43,21 @@ app.get('/blog/:type{(?:public|_astro|favicon)}/:filename', async (c) => {
   return fetch(`https://${blogHost}/blog/${type}/${filename}`)
 })
 
-
 // Proxy: Pomodorotimer
-app.get('/pomodoro', async (c) => {
-  return fetch(`https://${pomodoroHost}`)
-})
+// // TODO: pomodoroを、./pomodoro以下にデプロイしないとだめかも
+// app.get('/pomodoro', async (c) => {
+//   return fetch(`https://${pomodoroHost}/pomodoro`)
+// })
 
-app.get('/pomodoro/:type{(?:assets)}/:filename', async (c) => {
-  const { type, filename } = c.req.param();
-  return fetch(`https://${pomodoroHost}/${type}/${filename}`)
-})
+// app.get('/pomodoro/:type{(?:assets|public)}/:filename', async (c) => {
+//   const { type, filename } = c.req.param();
+//   console.log(type, filename);
+//   return fetch(`https://${pomodoroHost}/${type}/${filename}`)
+// })
+
+// app.get('/pomodoro/favicon.ico', async (c) => {
+//   return fetch(`https://${pomodoroHost}/favicon.ico`)
+
+// })
+
 export default app
