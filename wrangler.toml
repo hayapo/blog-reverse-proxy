@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "hono-reverse-proxy-example"
+name = "hono-reverse-proxy-for-hayapo-dev"
 main = "src/index.ts"
 compatibility_date = "2024-06-20"
 

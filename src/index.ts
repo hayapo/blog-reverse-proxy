@@ -25,38 +25,43 @@ app.get('/:type{(?:public|_astro|favicon)}/:filename', async (c) => {
 })
 
 // Proxy: blog
-app.get('/blog', async (c) => {
-  return fetch(`https://${blogHost}/blog`)
-})
-
-app.get('/blog/:entry', async (c) => {
-  const { entry } = c.req.param()
+app
+  .get('/blog', async (c) => {
+    return fetch(`https://${blogHost}/blog`)
+  })
+  .get('/blog/:entry', async (c) => {
+    const { entry } = c.req.param()
     return fetch(`https://${blogHost}/blog/${entry}`)
-})
-
-app.get('/blog/site.webmanifest', async  (c) => {
-  return fetch(`https://${blogHost}/blog/site.webmanifest`)
-})
-
-app.get('/blog/:type{(?:public|_astro|favicon)}/:filename', async (c) => {
-  const { type, filename } = c.req.param()
-  return fetch(`https://${blogHost}/blog/${type}/${filename}`)
-})
+  })
+  .get('/blog/site.webmanifest', async  (c) => {
+    return fetch(`https://${blogHost}/blog/site.webmanifest`)
+  })
+  .get('/blog/:type{(?:public|_astro|favicon)}/:filename', async (c) => {
+    const { type, filename } = c.req.param()
+    return fetch(`https://${blogHost}/blog/${type}/${filename}`)
+  })
 
 // Proxy: Pomodorotimer
 // // TODO: pomodoroを、./pomodoro以下にデプロイしないとだめかも
-app.get('/pomodoro', async (c) => {
-  return fetch(`https://${pomodoroHost}/pomodoro`)
-})
-
-app.get('/pomodoro/assets/:filename', async (c) => {
-  const { filename } = c.req.param();
-  console.log(filename);
-  return fetch(`https://${pomodoroHost}/assets/${filename}`)
-})
-
-app.get('/pomodoro/favicon.ico', async (c) => {
-  return fetch(`https://${pomodoroHost}/favicon.ico`)
-})
+app
+  .get('/pomodoro', async (c) => {
+    return fetch(`https://${pomodoroHost}`)
+  })
+  .get('/assets/:filename', async (c) => {
+    const { filename } = c.req.param();
+    return fetch(`https://${pomodoroHost}/assets/${filename}`)
+  })
+  .get('/favicon.ico', async (c) => {
+    return fetch(`https://${pomodoroHost}/favicon.ico`)
+  })
+  .get('/:manifest{^__manifest.*}', async (c) => {
+    const { manifest } = c.req.param();
+    const { p, version } = c.req.query();
+    const queries = new URLSearchParams();
+    queries.set('p', p);
+    queries.set('version', version);
+    console.log(`https://${pomodoroHost}/${manifest}?${queries.toString()}`);
+    return fetch(`https://${pomodoroHost}/${manifest}?${queries.toString()}`);
+  })
 
 export default app
